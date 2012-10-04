@@ -9,6 +9,7 @@ module Docks
     def self.yard(ship)
       # success = false
       result = nil
+      ship.checkout unless ship.exists?
       Dir.chdir(ship.path) do
         output = IO.popen('yard')
         result = output.readlines
