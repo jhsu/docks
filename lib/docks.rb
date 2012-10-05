@@ -28,10 +28,14 @@ module Docks
       def org_id
         @org_id ||= CONFIG['org_id']
       end
+
+      def org_authenticate!
+        github_organization_authenticate!(org_id)
+      end
     end
 
     get '/' do
-      github_organization_authenticate!(org_id)
+      org_authenticate!
       @projects = CONFIG['projects']
       erb :index
     end
@@ -39,6 +43,12 @@ module Docks
     post '/' do
       ship = Ship.receive(params[:payload])
       Generator.yard(ship)
+    end
+
+    get %r{/([\w]+)/(doc/.*)} do
+      org_authenticate!
+      project, file = params[:captures]
+      send_file(File.join(Ship.home, project, file))
     end
 
   end

@@ -12,5 +12,4 @@ projects.each do |name|
   Docks::Generator.yard(ship)
 end
 
-use Rack::Static, :urls => projects.map {|name| "/#{name}" }, :root => "projects"
 run Docks::App
