@@ -17,8 +17,12 @@ describe 'Docks::Ship' do
       @ship = Docks::Ship.receive(payload)
     end
 
-    it "should exist after receiving data" do
+    it "exists after receiving data" do
       assert @ship.exists?
+    end
+
+    it "generated docs" do
+      assert File.exists?(File.join(@ship.path, "doc"))
     end
   end
 

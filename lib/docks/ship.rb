@@ -55,6 +55,12 @@ module Docks
       }
     end
 
+    def revision
+      Dir.chdir(path) do
+        %x[cat .git/refs/heads/master].chomp
+      end
+    end
+
     # Check if repository is checked out.
     #
     # Returns boolean if directory exists.

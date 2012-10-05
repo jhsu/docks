@@ -36,7 +36,8 @@ module Docks
 
     get '/' do
       org_authenticate!
-      @projects = CONFIG['projects']
+      projects = CONFIG['projects']
+      @projects = projects.map {|name| Ship.new('name' => name) }
       erb :index
     end
 
@@ -55,9 +56,22 @@ module Docks
 end
 
 __END__
+@@ layout
+<html>
+  <style type="text/css">
+    .revision { color: #bbb; }
+  </style>
+  <body>
+  <%= yield %>
+  </body>
+</html>
+
 @@ index
+<h2>Projects</h2>
 <ul>
-  <% @projects.each do |name| %>
-  <li><a href="<%= name %>/doc/frames.html"><%= name %></a></li>
+  <% @projects.each do |project| %>
+  <li><a href="<%= project.name %>/doc/frames.html" title="<%= project.name %> Documentation">
+  <%= project.name %></a>
+    <span class="revision"><%= project.revision %></span></li>
   <% end %>
 </ul>
